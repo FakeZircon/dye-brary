@@ -70,17 +70,7 @@ public abstract class SheepColourMixin extends AnimalEntity implements Shearable
 		dataTracker.set(COLOR, (byte) ((b & 0x7F) | (sheared ? 0x80 : 0)));
 	}
 
-	//this is the method for changing how sheep render, something like an inject to check a custom tag would make this work no problem
-	//TODO add a property to sheep for if they are "classidyed" and if so custom colour render
-//    @Inject(method = "getDyedColor", at = @At("HEAD"), cancellable = true)
-//    private static void onGetDyedColor(DyeColor color, CallbackInfoReturnable<float[]> cir){
-//        if (color == DyeColor.WHITE){
-//            cir.setReturnValue(new float[]{0.3137254F, 0.3725901F, 0.4705882F});
-//            cir.cancel();
-//        }
-//    }
-
-	//this is the last step before sheep color rendering
+	//this is the last step before sheep color rendering. This is a test function
 	@Inject(method = "getRgbColor", at = @At("HEAD"), cancellable = true)
 	private static void onGetRgbColor(DyeColor color, CallbackInfoReturnable<float[]> cir){
 		if (color == DyeColor.WHITE){
