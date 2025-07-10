@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "zircon.dyebrary.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"SheepColourMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

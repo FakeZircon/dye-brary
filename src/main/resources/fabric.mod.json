@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "dyebrary",
+	"version": "${version}",
+	"name": "dyebrary",
+	"description": "This is a library mod that hopes to make adding modded dyes much more straightforward",
+	"authors": [
+		"FakeZircon"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FakeZircon/dye-brary"
+	},
+	"license": "MIT",
+	"icon": "assets/dyebrary/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"zircon.dyebrary.Dyebrary"
+		],
+		"client": [
+			"zircon.dyebrary.DyebraryClient"
+		]
+	},
+	"mixins": [
+		"dyebrary.mixins.json",
+		{
+			"config": "dyebrary.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
