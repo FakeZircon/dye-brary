@@ -75,7 +75,6 @@ public abstract class SheepColourMixin extends AnimalEntity implements Shearable
 	private static void onGetRgbColor(DyeColor color, CallbackInfoReturnable<float[]> cir){
 		if (color == DyeColor.WHITE){
 			cir.setReturnValue(new float[]{0.4737254F, 0.3725901F, 0.3105882F});
-			cir.cancel();
 		}
 	}
 }

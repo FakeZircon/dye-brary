@@ -44,10 +44,20 @@ public class ModDyeColour implements StringIdentifiable {
         this.fireworkColor = fireworkColor;
     }
 
+    public ModDyeColour(String name, float[] colComps, MapColor mapColor, int fireworkColor, int signColor){
+        this.name = name;
+        this.mapColor = mapColor;
+        this.signColor = signColor;
+        this.color = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
+        this.colorComponents = colComps;
+        this.fireworkColor = fireworkColor;
+    }
+
     public String getName() {
         return this.name;
     }
 
+    //allow for accessing hex code directly. I don't know if we need this actually
     public int getColor() { return this.color; }
 
     public float[] getColorComponents() {
