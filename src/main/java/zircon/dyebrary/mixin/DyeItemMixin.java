@@ -45,7 +45,6 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem {
                 shulkerEntity.setVariant(Optional.ofNullable(this.color));
                 stack.decrement(1);
             }
-
             cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
         }
     }

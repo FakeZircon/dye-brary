@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:shulker_shell"
+    },
+    "title": "New Digs!",
+    "description": "Dye a shulker while it's still alive!",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:end/find_end_city",
+  "criteria": {
+    "shulker_dyed": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "player": {},
+        "entity": {
+          "type": "minecraft:shulker"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "shulker_dyed"
+    ]
+  ]
+}
