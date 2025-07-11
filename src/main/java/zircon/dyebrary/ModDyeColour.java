@@ -4,6 +4,8 @@ import net.minecraft.block.MapColor;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.StringIdentifiable;
 
+import java.util.ArrayList;
+
 public class ModDyeColour implements StringIdentifiable {
     //todo expose constructor and global list of dyes, these values shouldn't even be here but I don't know where else to keep them in the meantime :)
 //    CANDY_APPLE("candy_apple", 0xf73838,MapColor.BRIGHT_RED, 0xf73838, 0xf73838),
@@ -30,14 +32,14 @@ public class ModDyeColour implements StringIdentifiable {
     private final int signColor;
     private final int color;
 
-    private ModDyeColour(String name, int color, MapColor mapColor, int fireworkColor, int signColor) {
+    public ModDyeColour(String name, int color, MapColor mapColor, int fireworkColor, int signColor) {
         this.name = name;
         this.mapColor = mapColor;
         this.signColor = signColor;
         this.color = color;
         int j = (color & 0xFF0000) >> 16;
         int k = (color & 0xFF00) >> 8;
-        int l = (color & 0xFF) >> 0;
+        int l = (color & 0xFF);
         this.colorComponents = new float[]{j / 255.0F, k / 255.0F, l / 255.0F};
         this.fireworkColor = fireworkColor;
     }
@@ -72,4 +74,6 @@ public class ModDyeColour implements StringIdentifiable {
     public String asString() {
         return this.name;
     }
+
+    public static ArrayList<ModDyeColour> DyeList = new ArrayList<ModDyeColour>();
 }
