@@ -7,6 +7,5 @@ import net.minecraft.entity.EntityType;
 public class DyebraryClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		//EntityRendererRegistry.register(EntityType.SHULKER, ShulkerRenderer::new);
 	}
 }

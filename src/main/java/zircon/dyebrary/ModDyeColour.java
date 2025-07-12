@@ -2,6 +2,7 @@ package zircon.dyebrary;
 
 import net.minecraft.block.MapColor;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 
 import java.util.ArrayList;
@@ -86,4 +87,6 @@ public class ModDyeColour implements StringIdentifiable {
     }
 
     public static ArrayList<ModDyeColour> DyeList = new ArrayList<ModDyeColour>();
+
+    public static ArrayList<Identifier> ShulkerTextureList = new ArrayList<>();
 }
