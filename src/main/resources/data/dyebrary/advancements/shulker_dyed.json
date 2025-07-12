@@ -7,7 +7,7 @@
     "description": "Dye a shulker while it's still alive!",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
   "parent": "minecraft:end/find_end_city",
   "criteria": {

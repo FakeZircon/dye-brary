@@ -39,6 +39,7 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem {
 
     @Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
     public void onUseOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir){
+        //todo figure out config file to make this optional
         if (entity instanceof ShulkerEntity shulkerEntity && shulkerEntity.isAlive() && shulkerEntity.getColor() != this.color) {
             shulkerEntity.getWorld().playSoundFromEntity(user, shulkerEntity, SoundEvents.ITEM_DYE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
             if (!user.getWorld().isClient) {
