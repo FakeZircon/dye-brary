@@ -21,11 +21,6 @@ public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, Shulker
     @Final
     private static Identifier TEXTURE;
 
-//    private static Identifier[] COLORED_TEXTURES = (Identifier[]) TexturedRenderLayers.COLORED_SHULKER_BOXES_TEXTURES
-//            .stream()
-//            .map(spriteId -> new Identifier("textures/" + spriteId.getTextureId().getPath() + ".png"))
-//            .toArray(Identifier[]::new);
-
     public ShulkerRenderMixin(EntityRendererFactory.Context context, ShulkerEntityModel<ShulkerEntity> entityModel, float f) {
         super(context, entityModel, f);
     }
