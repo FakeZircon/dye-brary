@@ -1,9 +1,7 @@
 package zircon.dyebrary;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
 
 public class DyebraryClient implements ClientModInitializer {
@@ -13,7 +11,8 @@ public class DyebraryClient implements ClientModInitializer {
 	}
 
 	public static void GetShulkerTextures(){
-		Dyebrary.LOGGER.info("Arranging Vanilla Shulker Textures"); //this is a stop gap solution, there will be missing shulker textures
+		//this assumes vanilla dyes get their original ids but also, imagine a dye mod stealing the 0 index, I cannot even think of what all that would break
+		Dyebrary.LOGGER.info("Arranging Vanilla Shulker Textures");
 		Identifier[] COLORED_TEXTURES = TexturedRenderLayers.COLORED_SHULKER_BOXES_TEXTURES
 				.stream()
 				.map(spriteId -> new Identifier("textures/" + spriteId.getTextureId().getPath() + ".png"))

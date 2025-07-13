@@ -1,7 +1,6 @@
 package zircon.dyebrary;
 
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 
 public class InitFuncs {
     // somewhat of a misnomer? Will include any added non-vanilla dyes, but we're reading from the vanilla dyes enum
@@ -11,6 +10,5 @@ public class InitFuncs {
         for (DyeColor dye : DyeColor.values()) {
             ModDyeColour.DyeList.add(new ModDyeColour(dye.getName(), dye.getColorComponents(), dye.getMapColor(), dye.getFireworkColor(), dye.getSignColor()));
         }
-        //ModDyeColour.DyeList.forEach(dye -> Dyebrary.LOGGER.info(dye.getName()));
     }
 }
