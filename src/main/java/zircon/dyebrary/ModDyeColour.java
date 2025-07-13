@@ -6,6 +6,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModDyeColour implements StringIdentifiable {
     //todo expose constructor and global list of dyes, these values shouldn't even be here but I don't know where else to keep them in the meantime :)
@@ -58,7 +60,6 @@ public class ModDyeColour implements StringIdentifiable {
         return this.name;
     }
 
-    //allow for accessing hex code directly. I don't know if we need this actually
     public int getColor() { return this.color; }
 
     public float[] getColorComponents() {
@@ -88,5 +89,7 @@ public class ModDyeColour implements StringIdentifiable {
 
     public static ArrayList<ModDyeColour> DyeList = new ArrayList<ModDyeColour>();
 
-    public static ArrayList<Identifier> ShulkerTextureList = new ArrayList<>();
+    //this is the eventual structure but for testing I'll use strings
+    //public static Map<ModDyeColour, Identifier> ShulkerTextures = new HashMap<>();
+    public static Map<String, Identifier> ShulkerTextures = new HashMap<>();
 }
