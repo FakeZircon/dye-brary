@@ -8,7 +8,10 @@ public class InitFuncs {
     public static void ReadVanillaDyes(){
         Dyebrary.LOGGER.info("Reading existing dyes");
         for (DyeColor dye : DyeColor.values()) {
-            ModDyeColour.DyeList.add(new ModDyeColour(dye.getName(), dye.getColorComponents(), dye.getMapColor(), dye.getFireworkColor(), dye.getSignColor()));
+            new ModDyeColour(dye.getName(), dye.getColorComponents(), dye.getMapColor(), dye.getFireworkColor(), dye.getSignColor());
+        }
+        for (ModDyeColour dye : ModDyeColour.DyeList.values()){
+            Dyebrary.LOGGER.info(String.format("#%h", dye.getColor()));
         }
     }
 }

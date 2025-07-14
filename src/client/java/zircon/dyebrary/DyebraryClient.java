@@ -2,6 +2,7 @@ package zircon.dyebrary;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.render.TexturedRenderLayers;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 public class DyebraryClient implements ClientModInitializer {
@@ -18,9 +19,15 @@ public class DyebraryClient implements ClientModInitializer {
 				.map(spriteId -> new Identifier("textures/" + spriteId.getTextureId().getPath() + ".png"))
 				.toArray(Identifier[]::new);
 
+		//broke this when I changed Dyelist to a hashmap
+//		for (int i = 0; i < 16; i++){
+//			//grab vanilla texture ids and put into ModDyeColour.ShulkerTextures
+//			ModDyeColour.ShulkerTextures.put(ModDyeColour.DyeList., COLORED_TEXTURES[i]);
+//		}
 		for (int i = 0; i < 16; i++){
-			//grab vanilla texture ids and put into ModDyeColour.ShulkerTextures
-			ModDyeColour.ShulkerTextures.put(ModDyeColour.DyeList.get(i).getName(), COLORED_TEXTURES[i]);
+			float[] colComps = DyeColor.values()[i].getColorComponents();
+			int colHex = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
+			ModDyeColour.ShulkerTextures.put(ModDyeColour.DyeList.get(colHex), COLORED_TEXTURES[i]);
 		}
 	}
 }

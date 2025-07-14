@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import zircon.dyebrary.Dyebrary;
 import zircon.dyebrary.ModDyeColour;
+import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
 @Mixin(ShulkerEntityRenderer.class)
 public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, ShulkerEntityModel<ShulkerEntity>> {
@@ -27,11 +28,11 @@ public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, Shulker
 
     @Override
     public Identifier getTexture(ShulkerEntity shulkerEntity) {
-        if (shulkerEntity.getColor() == null){
+        if (((ShulkerMiddleMan)shulkerEntity).getModColour() == null){
             return TEXTURE;
         }
-        if (ModDyeColour.ShulkerTextures.containsKey(shulkerEntity.getColor().getName())){
-            return ModDyeColour.ShulkerTextures.get(shulkerEntity.getColor().getName());
+        if (ModDyeColour.ShulkerTextures.containsKey(((ShulkerMiddleMan)shulkerEntity).getModColour())){
+            return ModDyeColour.ShulkerTextures.get(((ShulkerMiddleMan)shulkerEntity).getModColour());
         }
         else {
             return TEXTURE;

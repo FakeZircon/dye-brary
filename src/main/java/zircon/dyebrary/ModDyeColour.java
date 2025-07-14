@@ -45,6 +45,8 @@ public class ModDyeColour implements StringIdentifiable {
         int l = (color & 0xFF);
         this.colorComponents = new float[]{j / 255.0F, k / 255.0F, l / 255.0F};
         this.fireworkColor = fireworkColor;
+
+        DyeList.put(this.color, this);
     }
 
     public ModDyeColour(String name, float[] colComps, MapColor mapColor, int fireworkColor, int signColor){
@@ -54,6 +56,8 @@ public class ModDyeColour implements StringIdentifiable {
         this.color = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
         this.colorComponents = colComps;
         this.fireworkColor = fireworkColor;
+
+        DyeList.put(this.color, this);
     }
 
     public String getName() {
@@ -87,9 +91,9 @@ public class ModDyeColour implements StringIdentifiable {
         return this.name;
     }
 
-    public static ArrayList<ModDyeColour> DyeList = new ArrayList<ModDyeColour>();
+    //stores dyes in a hash with hexcode as the key
+    public static Map<Integer, ModDyeColour> DyeList = new HashMap<>();
 
-    //this is the eventual structure but for testing I'll use strings
-    //public static Map<ModDyeColour, Identifier> ShulkerTextures = new HashMap<>();
-    public static Map<String, Identifier> ShulkerTextures = new HashMap<>();
+    //stores shulker textures in a hash with moddyecolour as the key
+    public static Map<ModDyeColour, Identifier> ShulkerTextures = new HashMap<>();
 }
