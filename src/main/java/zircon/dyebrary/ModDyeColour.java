@@ -60,6 +60,10 @@ public class ModDyeColour implements StringIdentifiable {
         DyeList.put(this.color, this);
     }
 
+    public static void AddShulkerTexture(ModDyeColour colour, Identifier textureID){
+        ShulkerTextures.put(colour, textureID);
+    }
+
     public String getName() {
         return this.name;
     }
