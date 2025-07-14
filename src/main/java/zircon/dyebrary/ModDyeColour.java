@@ -64,6 +64,11 @@ public class ModDyeColour implements StringIdentifiable {
         ShulkerTextures.put(colour, textureID);
     }
 
+    //helper func cause I am tired of accessing the list
+    public static ModDyeColour getByHex(int colHex){
+        return DyeList.get(colHex);
+    }
+
     public String getName() {
         return this.name;
     }

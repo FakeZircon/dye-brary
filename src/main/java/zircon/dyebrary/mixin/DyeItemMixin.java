@@ -53,10 +53,10 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem {
         float[] colComps = this.color.getColorComponents();
         int colHex = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
 
-        if (entity instanceof ShulkerEntity shulkerEntity && shulkerEntity.isAlive() && ((ShulkerMiddleMan)shulkerEntity).getModColour() != ModDyeColour.DyeList.get(colHex)) {
+        if (entity instanceof ShulkerEntity shulkerEntity && shulkerEntity.isAlive() && ((ShulkerMiddleMan)shulkerEntity).getModColour() != ModDyeColour.getByHex(colHex)) {
             shulkerEntity.getWorld().playSoundFromEntity(user, shulkerEntity, SoundEvents.ITEM_DYE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
             if (!user.getWorld().isClient) {
-                ((ShulkerMiddleMan)shulkerEntity).setModVariant(Optional.ofNullable(ModDyeColour.DyeList.get(colHex)));
+                ((ShulkerMiddleMan)shulkerEntity).setModVariant(Optional.ofNullable(ModDyeColour.getByHex(colHex)));
                 stack.decrement(1);
             }
             cir.setReturnValue(ActionResult.success(user.getWorld().isClient));

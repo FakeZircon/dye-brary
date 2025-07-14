@@ -10,7 +10,7 @@ public class DyebraryClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		GetShulkerTextures();
 		//test adding new shulker texture for new dye colour
-		//ModDyeColour.AddShulkerTexture(ModDyeColour.DyeList.get(0xf7f7f7), new Identifier(Dyebrary.MOD_ID, "textures/entity/shulker/shulker_test.png"));
+		//ModDyeColour.AddShulkerTexture(ModDyeColour.getByHex(0xf7f7f7), new Identifier(Dyebrary.MOD_ID, "textures/entity/shulker/shulker_test.png"));
 	}
 
 	public static void GetShulkerTextures(){
