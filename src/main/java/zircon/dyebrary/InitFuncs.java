@@ -10,8 +10,8 @@ public class InitFuncs {
         for (DyeColor dye : DyeColor.values()) {
             new ModDyeColour(dye.getName(), dye.getColorComponents(), dye.getMapColor(), dye.getFireworkColor(), dye.getSignColor());
         }
-        for (ModDyeColour dye : ModDyeColour.DyeList.values()){
-            Dyebrary.LOGGER.info(String.format("#%h", dye.getColor()));
-        }
+//        for (ModDyeColour dye : ModDyeColour.DyeList.values()){
+//            Dyebrary.LOGGER.info(String.format("#%h", dye.getColor()));
+//        }
     }
 }

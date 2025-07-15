@@ -21,15 +21,11 @@ public class DyebraryClient implements ClientModInitializer {
 				.map(spriteId -> new Identifier("textures/" + spriteId.getTextureId().getPath() + ".png"))
 				.toArray(Identifier[]::new);
 
-		//broke this when I changed Dyelist to a hashmap
-//		for (int i = 0; i < 16; i++){
-//			//grab vanilla texture ids and put into ModDyeColour.ShulkerTextures
-//			ModDyeColour.ShulkerTextures.put(ModDyeColour.DyeList., COLORED_TEXTURES[i]);
-//		}
+		//only do this for vanilla dyes so we don't overindex COLORED_TEXTURES
 		for (int i = 0; i < 16; i++){
 			float[] colComps = DyeColor.values()[i].getColorComponents();
 			int colHex = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
-			ModDyeColour.ShulkerTextures.put(ModDyeColour.DyeList.get(colHex), COLORED_TEXTURES[i]);
+			ModDyeColour.ShulkerTextures.put(ModDyeColour.getByHex(colHex), COLORED_TEXTURES[i]);
 		}
 	}
 }
