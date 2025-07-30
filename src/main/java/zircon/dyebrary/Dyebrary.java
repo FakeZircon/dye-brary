@@ -15,7 +15,8 @@ public class Dyebrary implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("What A Wonderful Colourful World!");
 		InitFuncs.ReadVanillaDyes();
-		//test adding new dye colour
-		//new ModDyeColour("nacre", 0xf7f7f7, MapColor.OFF_WHITE, 0xf7f7f7, 0xf7f7f7);
 	}
+
+	//test adding new dye colour
+	public static final ModDyeColour PIGEON_BLUE = new ModDyeColour("pigeon_blue", 0x8686f7, MapColor.TERRACOTTA_BLUE, 0x8686f7, 0x8686f7);
 }

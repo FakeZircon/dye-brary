@@ -5,12 +5,19 @@ import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
+import static zircon.dyebrary.Dyebrary.PIGEON_BLUE;
+import static zircon.dyebrary.ModDyeColour.ShulkerTextures;
+
 public class DyebraryClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		GetShulkerTextures();
 		//test adding new shulker texture for new dye colour
-		//ModDyeColour.AddShulkerTexture(ModDyeColour.getByHex(0xf7f7f7), new Identifier(Dyebrary.MOD_ID, "textures/entity/shulker/shulker_test.png"));
+		AddShulkerTexture(PIGEON_BLUE, new Identifier(Dyebrary.MOD_ID, "textures/entity/shulker/shulker_pigeon_blue.png"));
+	}
+
+	public static void AddShulkerTexture(ModDyeColour colour, Identifier textureID){
+		ShulkerTextures.put(colour, textureID);
 	}
 
 	public static void GetShulkerTextures(){
@@ -25,7 +32,7 @@ public class DyebraryClient implements ClientModInitializer {
 		for (int i = 0; i < 16; i++){
 			float[] colComps = DyeColor.values()[i].getColorComponents();
 			int colHex = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
-			ModDyeColour.ShulkerTextures.put(ModDyeColour.getByHex(colHex), COLORED_TEXTURES[i]);
+			ShulkerTextures.put(ModDyeColour.getByHex(colHex), COLORED_TEXTURES[i]);
 		}
 	}
 }
