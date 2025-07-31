@@ -14,7 +14,6 @@ public class Dyebrary implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("What A Wonderful Colourful World!");
-		//InitFuncs.ReadVanillaDyes();
 	}
 
 	//test adding new dye colour

@@ -3,6 +3,7 @@ package zircon.dyebrary.mixin;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.ShulkerEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.IDyeItem;
+import zircon.dyebrary.interfaces.SheepMiddleMan;
 import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
 import java.util.Optional;
@@ -40,7 +42,7 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
     }
 
     @Override
-    public ModDyeColour dyebrary$getModColour() {
+    public ModDyeColour dye_brary$getModColour() {
         return this.modColor;
     }
 
@@ -55,10 +57,6 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
     @Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
     public void onUseOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir){
         //todo figure out config file to make this optional
-        // sooner todo switch fully over to using moddyecolour but for now we have this
-//        float[] colComps = this.color.getColorComponents();
-//        int colHex = ((int)(colComps[0]*255) << 16) + ((int)(colComps[1]*255) << 8) + (int)(colComps[2]*255);
-
         if (entity instanceof ShulkerEntity shulkerEntity && shulkerEntity.isAlive() && ((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour() != this.modColor) {
             shulkerEntity.getWorld().playSoundFromEntity(user, shulkerEntity, SoundEvents.ITEM_DYE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
             if (!user.getWorld().isClient) {
@@ -66,6 +64,19 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
                 stack.decrement(1);
             }
             cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
+        }
+
+        //sheep section
+        if (entity instanceof SheepEntity sheepEntity && sheepEntity.isAlive() && !sheepEntity.isSheared() && ((SheepMiddleMan)sheepEntity).dye_brary$getModColour() != this.modColor) {
+            sheepEntity.getWorld().playSoundFromEntity(user, sheepEntity, SoundEvents.ITEM_DYE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            if (!user.getWorld().isClient) {
+                ((SheepMiddleMan)sheepEntity).dye_brary$setModColour(this.modColor);
+                stack.decrement(1);
+            }
+
+            cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
+        } else {
+            cir.setReturnValue(ActionResult.PASS);
         }
     }
 }
