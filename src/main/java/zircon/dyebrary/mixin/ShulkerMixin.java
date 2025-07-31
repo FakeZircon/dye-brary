@@ -1,8 +1,6 @@
 package zircon.dyebrary.mixin;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.VariantHolder;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -11,12 +9,10 @@ import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,7 +23,7 @@ import java.util.Optional;
 
 @Mixin(ShulkerEntity.class)
 public class ShulkerMixin extends GolemEntity implements Monster, ShulkerMiddleMan {
-    //things this needs: nbt, getColor/variant, new int datatracker for colour hexcode
+    @Unique
     private static final TrackedData<Integer> COLOUR = DataTracker.registerData(ShulkerMixin.class, TrackedDataHandlerRegistry.INTEGER);
 
     protected ShulkerMixin(EntityType<? extends GolemEntity> entityType, World world) {
@@ -55,14 +51,14 @@ public class ShulkerMixin extends GolemEntity implements Monster, ShulkerMiddleM
     public void onSpawnNewShulker(CallbackInfo ci){
         ShulkerEntity shulkerEntity = EntityType.SHULKER.create(this.getWorld());
         if (shulkerEntity != null) {
-            ((ShulkerMiddleMan)shulkerEntity).setModVariant(this.getVariant());
+            ((ShulkerMiddleMan)shulkerEntity).dye_brary$setModVariant(this.getVariant());
             shulkerEntity.refreshPositionAfterTeleport(this.getPos());
             this.getWorld().spawnEntity(shulkerEntity);
         }
         ci.cancel();
     }
 
-    public void setModVariant(Optional<ModDyeColour> optional) {
+    public void dye_brary$setModVariant(Optional<ModDyeColour> optional) {
         this.dataTracker.set(COLOUR, optional.map(ModDyeColour::getColor).orElse(0));
     }
 
@@ -72,11 +68,11 @@ public class ShulkerMixin extends GolemEntity implements Monster, ShulkerMiddleM
      */
     @Overwrite
     public Optional<ModDyeColour> getVariant() {
-        return Optional.ofNullable(this.getModColour());
+        return Optional.ofNullable(this.dye_brary$getModColour());
     }
 
     @Override
-    public ModDyeColour getModColour() {
+    public ModDyeColour dye_brary$getModColour() {
         return ModDyeColour.DyeList.getOrDefault(this.dataTracker.get(COLOUR), null);
     }
 }

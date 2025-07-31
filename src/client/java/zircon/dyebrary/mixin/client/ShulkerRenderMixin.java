@@ -1,7 +1,5 @@
 package zircon.dyebrary.mixin.client;
 
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.ShulkerEntityRenderer;
@@ -11,7 +9,6 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import zircon.dyebrary.Dyebrary;
 import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
@@ -28,11 +25,11 @@ public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, Shulker
 
     @Override
     public Identifier getTexture(ShulkerEntity shulkerEntity) {
-        if (((ShulkerMiddleMan)shulkerEntity).getModColour() == null){
+        if (((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour() == null){
             return TEXTURE;
         }
-        if (ModDyeColour.ShulkerTextures.containsKey(((ShulkerMiddleMan)shulkerEntity).getModColour())){
-            return ModDyeColour.ShulkerTextures.get(((ShulkerMiddleMan)shulkerEntity).getModColour());
+        if (ModDyeColour.ShulkerTextures.containsKey(((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour())){
+            return ModDyeColour.ShulkerTextures.get(((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour());
         }
         else {
             return TEXTURE;
