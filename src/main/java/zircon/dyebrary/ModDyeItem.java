@@ -1,11 +1,10 @@
-package zircon.dyebrary.mixin;
+package zircon.dyebrary;
 
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SignChangingItem;
@@ -15,26 +14,23 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.IDyeItem;
 import zircon.dyebrary.interfaces.SheepMiddleMan;
 import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
 import java.util.Optional;
 
-@Mixin(DyeItem.class)
-public abstract class DyeItemMixin extends Item implements SignChangingItem, IDyeItem {
-    @Unique
-    private ModDyeColour modColor;
+public class ModDyeItem extends Item implements SignChangingItem, IDyeItem {
+    private final ModDyeColour modColor;
 
-    public DyeItemMixin(DyeColor color, Settings settings) {
+    public ModDyeItem(ModDyeColour colour, Settings settings) {
         super(settings);
-        throw new AssertionError();
+        this.modColor = colour;
     }
 
     @Override
@@ -42,16 +38,12 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
         return this.modColor;
     }
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void onInit(DyeColor color, Settings settings, CallbackInfo ci){
-        //init vanillish ModDyes here so they are registered in time for item creation
-        this.modColor = new ModDyeColour(color.getName(), color.getColorComponents(), color.getMapColor(), color.getFireworkColor(), color.getSignColor());
+    public boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player){
+        return false;
     }
 
-    @Shadow public abstract boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player);
-
-    @Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
-    public void onUseOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir){
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand){
         //todo figure out config file to make this optional
         if (entity instanceof ShulkerEntity shulkerEntity && shulkerEntity.isAlive() && ((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour() != this.modColor) {
             shulkerEntity.getWorld().playSoundFromEntity(user, shulkerEntity, SoundEvents.ITEM_DYE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -59,8 +51,7 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
                 ((ShulkerMiddleMan)shulkerEntity).dye_brary$setModVariant(Optional.ofNullable(this.modColor));
                 stack.decrement(1);
             }
-            cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
-            cir.cancel();
+            return ActionResult.success(user.getWorld().isClient);
         }
 
         //sheep section
@@ -71,10 +62,9 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
                 stack.decrement(1);
             }
 
-            cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
-            cir.cancel();
+            return ActionResult.success(user.getWorld().isClient);
         } else {
-            cir.setReturnValue(ActionResult.PASS);
+            return ActionResult.PASS;
         }
     }
 }
