@@ -64,10 +64,11 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
                 stack.decrement(1);
             }
             cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
+            cir.cancel();
         }
 
         //sheep section
-        if (entity instanceof SheepEntity sheepEntity && sheepEntity.isAlive() && !sheepEntity.isSheared() && ((SheepMiddleMan)sheepEntity).dye_brary$getModColour() != this.modColor) {
+        else if (entity instanceof SheepEntity sheepEntity && sheepEntity.isAlive() && !sheepEntity.isSheared() && ((SheepMiddleMan)sheepEntity).dye_brary$getModColour() != this.modColor) {
             sheepEntity.getWorld().playSoundFromEntity(user, sheepEntity, SoundEvents.ITEM_DYE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F);
             if (!user.getWorld().isClient) {
                 ((SheepMiddleMan)sheepEntity).dye_brary$setModColour(this.modColor);
@@ -75,6 +76,7 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
             }
 
             cir.setReturnValue(ActionResult.success(user.getWorld().isClient));
+            cir.cancel();
         } else {
             cir.setReturnValue(ActionResult.PASS);
         }

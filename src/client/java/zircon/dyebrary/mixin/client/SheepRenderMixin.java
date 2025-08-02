@@ -32,17 +32,4 @@ public abstract class SheepRenderMixin extends FeatureRenderer<SheepEntity, Shee
         float[] colComp = ((SheepMiddleMan)sheepEntity).dye_brary$getModColour().getColorComponents();
         return new float[]{colComp[0]*0.75f, colComp[1]*0.75f, colComp[2]*0.75f};
     }
-
-//    @ModifyVariable(method = "", at = @At(value = "STORE"), ordinal = 11)
-//    private float[] modCols(){
-//        return sheepEntity.getColor().getColorComponents();
-//    }
-//    @Inject(method = "render*", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/SheepEntity;getRgbColor(Lnet/minecraft/util/DyeColor;)[F", ordinal = 2))
-//    private void modCols(
-//            MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, SheepEntity sheepEntity, float f, float g, float h, float j, float k, float l
-//    ){
-//
-////        float[] colComp = ((SheepMiddleMan)sheepEntity).dye_brary$getModColour().getColorComponents();
-////        return new float[]{colComp[0]*0.75f, colComp[1]*0.75f, colComp[2]*0.75f};
-//    }
 }

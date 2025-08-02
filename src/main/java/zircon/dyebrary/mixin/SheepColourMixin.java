@@ -56,51 +56,11 @@ public abstract class SheepColourMixin extends AnimalEntity implements Shearable
 		this.dataTracker.set(COLOUR, modColor.getColor());
 	}
 
-	//this is the last step before sheep color rendering. This is a test function
-	@Inject(method = "getRgbColor", at = @At("HEAD"), cancellable = true)
-	private static void onGetRgbColor(DyeColor color, CallbackInfoReturnable<float[]> cir){
-		if (color == DyeColor.WHITE){
-			cir.setReturnValue(new float[]{0.4737254F, 0.3725901F, 0.3105882F});
-		}
-	}
-
-	//todo fix all this cause it's old style. ShulkerMixin stuff has been moved over above ^
-//	/**
-//	 * @reason Allowing >16 unique dye colors (128)
-//	 * @author ADudeCalledLeo
-//	 */
-//	@Overwrite
-//	public DyeColor getColor() {
-//		byte b = dataTracker.get(COLOR);
-//		return DyeColor.byId(b & 0x7F);
-//	}
-//
-//	/**
-//	 * @reason Allowing >16 unique dye colors (128)
-//	 * @author ADudeCalledLeo
-//	 */
-//	@Overwrite
-//	public void setColor(DyeColor color) {
-//		byte b = dataTracker.get(COLOR);
-//		dataTracker.set(COLOR, (byte) ((b & 0x80) | color.getId() % 0x7F));
-//	}
-//
-//	/**
-//	 * @reason Allowing >16 unique dye colors (128)
-//	 * @author ADudeCalledLeo
-//	 */
-//	@Overwrite
-//	public boolean isSheared() {
-//		return (dataTracker.get(COLOR) & 0x80) != 0;
-//	}
-//
-//	/**
-//	 * @reason Allowing >16 unique dye colors (128)
-//	 * @author ADudeCalledLeo
-//	 */
-//	@Overwrite
-//	public void setSheared(boolean sheared) {
-//		byte b = dataTracker.get(COLOR);
-//		dataTracker.set(COLOR, (byte) ((b & 0x7F) | (sheared ? 0x80 : 0)));
+	//this is the last step before things are passed to sheep color rendering. This is a test function
+//	@Inject(method = "getRgbColor", at = @At("HEAD"), cancellable = true)
+//	private static void onGetRgbColor(DyeColor color, CallbackInfoReturnable<float[]> cir){
+//		if (color == DyeColor.WHITE){
+//			cir.setReturnValue(new float[]{0.4737254F, 0.3725901F, 0.3105882F});
+//		}
 //	}
 }
