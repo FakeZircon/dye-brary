@@ -22,7 +22,8 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
     @Shadow
     private static Codec<Text[]> MESSAGES_CODEC;
 
-    /// this is being called twice each time a sign is changed. No idea why
+    /// this is called twice when changing sign colour by commands, not sure why the second call does not update the colour properly when the first call does
+    /// additionally, hand dyeing a sign calls create as well, but I do not know how or if it called retroactively from the blockdata being modified
 //    @Shadow
 //    public static Codec<SignText> CODEC = RecordCodecBuilder.create(
 //            instance -> instance.group(
@@ -52,10 +53,10 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         return newText;
     }
 
-//    @Inject(method = "create", at = @At("RETURN"))
-//    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
-//        Dyebrary.LOGGER.info(String.format("%s", color.asString()));
-//    }
+    @Inject(method = "create", at = @At("RETURN"))
+    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
+        Dyebrary.LOGGER.info(String.format("%s", color.asString()));
+    }
 
     @Unique
     private int colour;
