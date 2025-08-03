@@ -28,7 +28,8 @@ public class Dyebrary implements ModInitializer {
 		LOGGER.info("What A Wonderful Colourful World!");
 	}
 
-	public static Item registerModDyeItem(Identifier id, ModDyeColour colour){
+	//helper function for testing only, this should be done by the modder themself for max customization
+	private static Item registerModDyeItem(Identifier id, ModDyeColour colour){
 		ModDyeItem dye = new ModDyeItem(colour, new FabricItemSettings());
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register( (itemGroup) -> itemGroup.addBefore(Items.BOWL, dye));
 		return Registry.register(Registries.ITEM, id, dye);

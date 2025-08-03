@@ -1,5 +1,6 @@
 package zircon.dyebrary;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.block.MapColor;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModDyeColour implements StringIdentifiable {
-    //todo expose constructor and global list of dyes, these values shouldn't even be here but I don't know where else to keep them in the meantime :)
+public class ModDyeColour {
+    ////these values shouldn't even be here but I don't know where else to keep them in the meantime :)
 //    CANDY_APPLE("candy_apple", 0xf73838,MapColor.BRIGHT_RED, 0xf73838, 0xf73838),
 //    CLEMENTINE("clementine", 0xf79738, MapColor.ORANGE, 0xf79738, 0xf79738),
 //    LEMON("lemon", 0xf7f738, MapColor.YELLOW, 0xf7f738, 0xf7f738),
@@ -28,6 +29,7 @@ public class ModDyeColour implements StringIdentifiable {
 //    APPARITION("apparition", 0xa2a2a2, MapColor.TERRACOTTA_LIGHT_GRAY, 0xa2a2a2, 0xa2a2a2),
 //    NACRE("nacre", 0xf7f7f7, MapColor.OFF_WHITE, 0xf7f7f7, 0xf7f7f7);
 
+    public Codec<Integer> CODEC = Codec.INT;
     private final String name;
     private final MapColor mapColor;
     private final float[] colorComponents;
@@ -92,11 +94,6 @@ public class ModDyeColour implements StringIdentifiable {
     }
 
     public String toString() {
-        return this.name;
-    }
-
-    @Override
-    public String asString() {
         return this.name;
     }
 
