@@ -1,16 +1,18 @@
 {
-	"required": true,
-	"package": "zircon.dyebrary.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"SheepColourMixin",
-		"DyeItemMixin",
-		"ShulkerMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
+  "required": true,
+  "package": "zircon.dyebrary.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "DyeItemMixin",
+    "SheepColourMixin",
+    "ShulkerMixin",
+    "SignTextMixin",
+    "SignAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
 	}
 }

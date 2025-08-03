@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import zircon.dyebrary.interfaces.IDyeItem;
+import zircon.dyebrary.interfaces.ISignText;
 import zircon.dyebrary.interfaces.SheepMiddleMan;
 import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
@@ -36,10 +37,6 @@ public class ModDyeItem extends Item implements SignChangingItem, IDyeItem {
     @Override
     public ModDyeColour dye_brary$getModColour() {
         return this.modColor;
-    }
-
-    public boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player){
-        return false;
     }
 
     @Override
@@ -65,6 +62,16 @@ public class ModDyeItem extends Item implements SignChangingItem, IDyeItem {
             return ActionResult.success(user.getWorld().isClient);
         } else {
             return ActionResult.PASS;
+        }
+    }
+
+    @Override
+    public boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player){
+        if (signBlockEntity.changeText(text -> ((ISignText)text).dye_brary$withColour(this.modColor.getSignColor()), front)) {
+            world.playSound(null, signBlockEntity.getPos(), SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            return true;
+        } else {
+            return false;
         }
     }
 }

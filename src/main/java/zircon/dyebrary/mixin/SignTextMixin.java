@@ -1,0 +1,67 @@
+package zircon.dyebrary.mixin;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.block.entity.SignText;
+import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import zircon.dyebrary.interfaces.ISignText;
+
+import java.util.Optional;
+
+@Mixin(SignText.class)
+public abstract class SignTextMixin implements ISignText, SignAccessor {
+    @Final
+    @Shadow
+    private static Codec<Text[]> MESSAGES_CODEC;
+
+    @Shadow
+    public static Codec<SignText> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                            MESSAGES_CODEC.fieldOf("messages").forGetter(signText -> signText.getMessages(false)),
+                            MESSAGES_CODEC.optionalFieldOf("filtered_messages").forGetter(signText -> Optional.ofNullable(signText.getMessages(true))),
+                            Codec.INT.fieldOf("colour").orElse(0).forGetter(signText -> ((ISignText)signText).dye_brary$getTextColour()),
+                            Codec.BOOL.fieldOf("has_glowing_text").orElse(false).forGetter(SignText::isGlowing)
+                    )
+                    .apply(instance, SignTextMixin::modCreate)
+    );
+
+    @Shadow @Final private Text[] messages;
+
+    @Shadow @Final private Text[] filteredMessages;
+
+    @Shadow @Final private boolean glowing;
+
+    @Unique
+    private static SignText modCreate(Text[] messages, Optional<Text[]> filteredMessages, int color, boolean glowing){
+        Text[] texts = (Text[])filteredMessages.orElseGet(SignAccessor::invokeGetDefaultText);
+        SignAccessor.invokeCopyMessages(messages, texts);
+
+        SignText newText = new SignText(messages, texts, DyeColor.BLACK, glowing);
+        ((ISignText)newText).dye_brary$setTextColour(color);
+        return newText;
+    }
+
+    @Unique
+    private int colour;
+
+    @Override
+    public void dye_brary$setTextColour(int signColour){
+        this.colour = signColour;
+    }
+
+    @Override
+    public int dye_brary$getTextColour(){
+        return this.colour;
+    }
+
+    @Override
+    public SignText dye_brary$withColour(int signColour){
+        return signColour == this.dye_brary$getTextColour() ? modCreate(this.messages, Optional.ofNullable(this.filteredMessages), this.colour, this.glowing)
+                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
+    }
+}
