@@ -14,6 +14,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -67,11 +68,12 @@ public class ModDyeItem extends Item implements SignChangingItem, IDyeItem {
 
     @Override
     public boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player){
-        if (signBlockEntity.changeText(text -> ((ISignText)text).dye_brary$withColour(this.modColor.getSignColor()), front)) {
-            world.playSound(null, signBlockEntity.getPos(), SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            return true;
-        } else {
-            return false;
-        }
+//        if (signBlockEntity.changeText(text -> ((ISignText)text).dye_brary$withColour(this.modColor.getSignColor()), front)) {
+//            world.playSound(null, signBlockEntity.getPos(), SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return false;
     }
 }

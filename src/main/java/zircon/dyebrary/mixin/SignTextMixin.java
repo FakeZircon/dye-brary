@@ -1,7 +1,6 @@
 package zircon.dyebrary.mixin;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -9,6 +8,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import zircon.dyebrary.Dyebrary;
 import zircon.dyebrary.interfaces.ISignText;
 
 import java.util.Optional;
@@ -19,16 +22,17 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
     @Shadow
     private static Codec<Text[]> MESSAGES_CODEC;
 
-    @Shadow
-    public static Codec<SignText> CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                            MESSAGES_CODEC.fieldOf("messages").forGetter(signText -> signText.getMessages(false)),
-                            MESSAGES_CODEC.optionalFieldOf("filtered_messages").forGetter(signText -> Optional.ofNullable(signText.getMessages(true))),
-                            Codec.INT.fieldOf("colour").orElse(0).forGetter(signText -> ((ISignText)signText).dye_brary$getTextColour()),
-                            Codec.BOOL.fieldOf("has_glowing_text").orElse(false).forGetter(SignText::isGlowing)
-                    )
-                    .apply(instance, SignTextMixin::modCreate)
-    );
+    /// this is being called twice each time a sign is changed. No idea why
+//    @Shadow
+//    public static Codec<SignText> CODEC = RecordCodecBuilder.create(
+//            instance -> instance.group(
+//                            MESSAGES_CODEC.fieldOf("messages").forGetter(signText -> signText.getMessages(false)),
+//                            MESSAGES_CODEC.optionalFieldOf("filtered_messages").forGetter(signText -> Optional.ofNullable(signText.getMessages(true))),
+//                            Codec.INT.fieldOf("colour").orElse(0).forGetter(signText -> ((ISignText)signText).dye_brary$getTextColour()),
+//                            Codec.BOOL.fieldOf("has_glowing_text").orElse(false).forGetter(SignText::isGlowing)
+//                    )
+//                    .apply(instance, SignTextMixin::modCreate)
+//    );
 
     @Shadow @Final private Text[] messages;
 
@@ -42,9 +46,16 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         SignAccessor.invokeCopyMessages(messages, texts);
 
         SignText newText = new SignText(messages, texts, DyeColor.BLACK, glowing);
-        ((ISignText)newText).dye_brary$setTextColour(color);
+        //((ISignText)newText).dye_brary$setTextColour(color);
+
+        Dyebrary.LOGGER.info(String.format("%d", color));
         return newText;
     }
+
+//    @Inject(method = "create", at = @At("RETURN"))
+//    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
+//        Dyebrary.LOGGER.info(String.format("%s", color.asString()));
+//    }
 
     @Unique
     private int colour;
@@ -59,9 +70,9 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         return this.colour;
     }
 
-    @Override
-    public SignText dye_brary$withColour(int signColour){
-        return signColour == this.dye_brary$getTextColour() ? modCreate(this.messages, Optional.ofNullable(this.filteredMessages), this.colour, this.glowing)
-                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
-    }
+//    @Override
+//    public SignText dye_brary$withColour(int signColour){
+//        return signColour == this.dye_brary$getTextColour() ? modCreate(this.messages, Optional.ofNullable(this.filteredMessages), this.colour, this.glowing)
+//                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
+//    }
 }
