@@ -1,6 +1,7 @@
 package zircon.dyebrary.mixin;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -10,7 +11,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import sun.misc.SignalHandler;
 import zircon.dyebrary.Dyebrary;
 import zircon.dyebrary.interfaces.ISignText;
 
@@ -24,16 +27,16 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
 
     /// this is called twice when changing sign colour by commands, not sure why the second call does not update the colour properly when the first call does
     /// additionally, hand dyeing a sign calls create as well, but I do not know how or if it called retroactively from the blockdata being modified
-//    @Shadow
-//    public static Codec<SignText> CODEC = RecordCodecBuilder.create(
-//            instance -> instance.group(
-//                            MESSAGES_CODEC.fieldOf("messages").forGetter(signText -> signText.getMessages(false)),
-//                            MESSAGES_CODEC.optionalFieldOf("filtered_messages").forGetter(signText -> Optional.ofNullable(signText.getMessages(true))),
-//                            Codec.INT.fieldOf("colour").orElse(0).forGetter(signText -> ((ISignText)signText).dye_brary$getTextColour()),
-//                            Codec.BOOL.fieldOf("has_glowing_text").orElse(false).forGetter(SignText::isGlowing)
-//                    )
-//                    .apply(instance, SignTextMixin::modCreate)
-//    );
+    @Shadow
+    public static Codec<SignText> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                            MESSAGES_CODEC.fieldOf("messages").forGetter(signText -> signText.getMessages(false)),
+                            MESSAGES_CODEC.optionalFieldOf("filtered_messages").forGetter(signText -> Optional.ofNullable(signText.getMessages(true))),
+                            Codec.INT.fieldOf("colour").orElse(0).forGetter(signText -> ((ISignText)signText).dye_brary$getTextColour()),
+                            Codec.BOOL.fieldOf("has_glowing_text").orElse(false).forGetter(SignText::isGlowing)
+                    )
+                    .apply(instance, SignTextMixin::modCreate)
+    );
 
     @Shadow @Final private Text[] messages;
 
@@ -47,16 +50,22 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         SignAccessor.invokeCopyMessages(messages, texts);
 
         SignText newText = new SignText(messages, texts, DyeColor.BLACK, glowing);
-        //((ISignText)newText).dye_brary$setTextColour(color);
+        ((ISignText)newText).dye_brary$setTextColour(color);
 
-        Dyebrary.LOGGER.info(String.format("%d", color));
+        Dyebrary.LOGGER.info(String.format("%d", ((ISignText)newText).dye_brary$getTextColour()));
         return newText;
     }
 
-    @Inject(method = "create", at = @At("RETURN"))
-    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
-        Dyebrary.LOGGER.info(String.format("%s", color.asString()));
-    }
+//    @Inject(method = "<init>([Lnet/minecraft/text/Text;[Lnet/minecraft/text/Text;Lnet/minecraft/util/DyeColor;Z)V", at = @At("RETURN"))
+//    private void onInit(Text[] messages, Text[] filteredMessages, DyeColor color, boolean glowing, CallbackInfo ci){
+//        //this.colour = 8816357;
+//        Dyebrary.LOGGER.info("called");
+//    }
+
+//    @Inject(method = "create", at = @At("RETURN"))
+//    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
+//        Dyebrary.LOGGER.info(String.format("%s", color.asString()));
+//    }
 
     @Unique
     private int colour;
@@ -71,9 +80,11 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         return this.colour;
     }
 
-//    @Override
-//    public SignText dye_brary$withColour(int signColour){
+    @Override
+    public SignText dye_brary$withColour(int signColour){
+        return signColour == this.dye_brary$getTextColour() ? (SignText) (Object) this
+                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
 //        return signColour == this.dye_brary$getTextColour() ? modCreate(this.messages, Optional.ofNullable(this.filteredMessages), this.colour, this.glowing)
 //                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
-//    }
+    }
 }
