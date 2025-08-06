@@ -16,6 +16,7 @@ public class SignRendererMixin {
         return ((ISignText)sign).dye_brary$getTextColour();
     }
 
+    //hate to use "name" here, but I straight up don't think I can do without it
     @ModifyVariable(method = "renderText", at = @At("STORE"), name = "k")
     private static int modGlowCol(int k, BlockPos pos, SignText sign){
         return ((ISignText)sign).dye_brary$getTextColour();

@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.IDyeItem;
+import zircon.dyebrary.interfaces.ISignText;
 import zircon.dyebrary.interfaces.SheepMiddleMan;
 import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
@@ -48,15 +49,7 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
         this.modColor = new ModDyeColour(color.getName(), color.getColorComponents(), color.getMapColor(), color.getFireworkColor(), color.getSignColor());
     }
 
-    @Shadow
-    public abstract boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player);//{
-//        if (signBlockEntity.changeText(text -> text.withColor(this.getColor()), front)) {
-//            world.playSound(null, signBlockEntity.getPos(), SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-//            return true;
-//        } else {
-//            return false;
-//        }
-    //}
+    @Shadow public abstract boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player);
 
     @Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
     public void onUseOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir){
@@ -84,5 +77,16 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
         } else {
             cir.setReturnValue(ActionResult.PASS);
         }
+    }
+
+    @Inject(method = "useOnSign", at = @At("HEAD"), cancellable = true)
+    private void onUseOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player, CallbackInfoReturnable<Boolean> cir){
+        if (signBlockEntity.changeText(text -> ((ISignText)text).dye_brary$withColour(this.modColor.getSignColor()), front)) {
+            world.playSound(null, signBlockEntity.getPos(), SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            cir.setReturnValue(true);
+        } else {
+            cir.setReturnValue(false);
+        }
+        cir.cancel();
     }
 }
