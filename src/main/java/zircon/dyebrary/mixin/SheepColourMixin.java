@@ -1,7 +1,9 @@
 package zircon.dyebrary.mixin;
 
+import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Shearable;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -10,6 +12,9 @@ import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -56,11 +61,24 @@ public abstract class SheepColourMixin extends AnimalEntity implements Shearable
 		this.dataTracker.set(COLOUR, modColor.getColor());
 	}
 
-	//this is the last step before things are passed to sheep color rendering. This is a test function
-//	@Inject(method = "getRgbColor", at = @At("HEAD"), cancellable = true)
-//	private static void onGetRgbColor(DyeColor color, CallbackInfoReturnable<float[]> cir){
-//		if (color == DyeColor.WHITE){
-//			cir.setReturnValue(new float[]{0.4737254F, 0.3725901F, 0.3105882F});
-//		}
-//	}
+	@Unique
+    private static ModDyeColour generateDefaultModColour(Random random) {
+		int i = random.nextInt(100);
+		if (i < 5) {
+			return ModDyeColour.getByHex(16383998);
+		} else if (i < 10) {
+			return ModDyeColour.getByHex(4673362);
+		} else if (i < 15) {
+			return ModDyeColour.getByHex(10329495);
+		} else if (i < 18) {
+			return ModDyeColour.getByHex(8606770);
+		} else {
+			return random.nextInt(500) == 0 ? ModDyeColour.getByHex(15961002) : ModDyeColour.getByHex(16383998);
+		}
+	}
+
+	@Inject(method = "initialize", at = @At("RETURN"))
+	private void onInitialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir){
+		this.dye_brary$setModColour(generateDefaultModColour(world.getRandom()));
+	}
 }
