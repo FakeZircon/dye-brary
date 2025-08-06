@@ -98,4 +98,11 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         cir.setReturnValue(fakeInit(texts, texts2, this.colour, this.glowing));
         cir.cancel();
     }
+
+    @Inject(method = "withGlowing", at = @At("RETURN"), cancellable = true)
+    private void onWithGlowing(boolean glowing, CallbackInfoReturnable<SignText> cir){
+        cir.setReturnValue(glowing == this.glowing ? (SignText) (Object) this
+                : fakeInit(this.messages, this.filteredMessages, this.colour, glowing));
+        cir.cancel();
+    }
 }
