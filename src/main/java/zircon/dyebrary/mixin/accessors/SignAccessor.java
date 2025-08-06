@@ -1,4 +1,4 @@
-package zircon.dyebrary.mixin;
+package zircon.dyebrary.mixin.accessors;
 
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;

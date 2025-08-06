@@ -8,10 +8,9 @@ import net.minecraft.util.DyeColor;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import zircon.dyebrary.Dyebrary;
+import zircon.dyebrary.mixin.accessors.SignAccessor;
 import zircon.dyebrary.interfaces.ISignText;
 
 import java.util.Optional;
@@ -22,8 +21,6 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
     @Shadow
     private static Codec<Text[]> MESSAGES_CODEC;
 
-    /// this is called twice when changing sign colour by commands, not sure why the second call does not update the colour properly when the first call does
-    /// additionally, hand dyeing a sign calls create as well, but I do not know how or if it called retroactively from the blockdata being modified
     @Shadow
     public static Codec<SignText> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -49,8 +46,6 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         SignText newText = new SignText(messages, texts, DyeColor.BLACK, glowing);
         ((ISignText)newText).dye_brary$setTextColour(color);
 
-//        Dyebrary.LOGGER.info(String.format("sign colour: %d", ((ISignText)newText).dye_brary$getTextColour()));
-//        Dyebrary.LOGGER.info(String.format("given colour: %d", color));
         return newText;
     }
 
@@ -60,17 +55,6 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         ((ISignText)newText).dye_brary$setTextColour(signColor);
         return newText;
     }
-
-    @Inject(method = "<init>([Lnet/minecraft/text/Text;[Lnet/minecraft/text/Text;Lnet/minecraft/util/DyeColor;Z)V", at = @At("RETURN"))
-    private void onInit(Text[] messages, Text[] filteredMessages, DyeColor color, boolean glowing, CallbackInfo ci){
-        //this.colour = 8816357;
-        //Dyebrary.LOGGER.info("called");
-    }
-
-//    @Inject(method = "create", at = @At("RETURN"))
-//    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
-//        Dyebrary.LOGGER.info(String.format("%s", color.asString()));
-//    }
 
     @Unique
     @Final

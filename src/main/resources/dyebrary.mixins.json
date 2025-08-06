@@ -7,7 +7,7 @@
     "SheepColourMixin",
     "ShulkerMixin",
     "SignTextMixin",
-    "SignAccessor"
+    "accessors.SignAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

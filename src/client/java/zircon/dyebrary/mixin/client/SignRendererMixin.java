@@ -6,7 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import zircon.dyebrary.Dyebrary;
 import zircon.dyebrary.interfaces.ISignText;
 
 @Mixin(SignBlockEntityRenderer.class)
