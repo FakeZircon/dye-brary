@@ -5,15 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import sun.misc.SignalHandler;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import zircon.dyebrary.Dyebrary;
 import zircon.dyebrary.interfaces.ISignText;
 
@@ -52,15 +49,23 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         SignText newText = new SignText(messages, texts, DyeColor.BLACK, glowing);
         ((ISignText)newText).dye_brary$setTextColour(color);
 
-        Dyebrary.LOGGER.info(String.format("%d", ((ISignText)newText).dye_brary$getTextColour()));
+        Dyebrary.LOGGER.info(String.format("sign colour: %d", ((ISignText)newText).dye_brary$getTextColour()));
+        Dyebrary.LOGGER.info(String.format("given colour: %d", color));
         return newText;
     }
 
-//    @Inject(method = "<init>([Lnet/minecraft/text/Text;[Lnet/minecraft/text/Text;Lnet/minecraft/util/DyeColor;Z)V", at = @At("RETURN"))
-//    private void onInit(Text[] messages, Text[] filteredMessages, DyeColor color, boolean glowing, CallbackInfo ci){
-//        //this.colour = 8816357;
-//        Dyebrary.LOGGER.info("called");
-//    }
+    @Unique
+    private static SignText fakeInit(Text[] messages, Text[] filteredMessages, int signColor, boolean glowing){
+        SignText newText = new SignText(messages, filteredMessages, DyeColor.BLACK, glowing);
+        ((ISignText)newText).dye_brary$setTextColour(signColor);
+        return newText;
+    }
+
+    @Inject(method = "<init>([Lnet/minecraft/text/Text;[Lnet/minecraft/text/Text;Lnet/minecraft/util/DyeColor;Z)V", at = @At("RETURN"))
+    private void onInit(Text[] messages, Text[] filteredMessages, DyeColor color, boolean glowing, CallbackInfo ci){
+        //this.colour = 8816357;
+        //Dyebrary.LOGGER.info("called");
+    }
 
 //    @Inject(method = "create", at = @At("RETURN"))
 //    private static void onCreate(Text[] messages, Optional<Text[]> filteredMessages, DyeColor color, boolean glowing, CallbackInfoReturnable<SignText> cir){
@@ -68,6 +73,8 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
 //    }
 
     @Unique
+    @Final
+    @Mutable
     private int colour;
 
     @Override
@@ -83,8 +90,12 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
     @Override
     public SignText dye_brary$withColour(int signColour){
         return signColour == this.dye_brary$getTextColour() ? (SignText) (Object) this
-                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
-//        return signColour == this.dye_brary$getTextColour() ? modCreate(this.messages, Optional.ofNullable(this.filteredMessages), this.colour, this.glowing)
-//                : modCreate(this.messages, Optional.ofNullable(this.filteredMessages), signColour, this.glowing);
+                : fakeInit(this.messages, this.filteredMessages, signColour, this.glowing);
+    }
+
+    @Inject(method = "withMessage(ILnet/minecraft/text/Text;Lnet/minecraft/text/Text;)Lnet/minecraft/block/entity/SignText;", at = @At("RETURN"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    private void onWithMessage(int line, Text message, Text filteredMessage, CallbackInfoReturnable<SignText> cir, Text[] texts, Text[] texts2){
+        cir.setReturnValue(fakeInit(texts, texts2, this.colour, this.glowing));
+        cir.cancel();
     }
 }

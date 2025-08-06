@@ -12,6 +12,6 @@ public class SignRendererMixin {
     @ModifyVariable(method = "getColor", at = @At("STORE"), ordinal = 0)
     private static int modCol(int i, SignText sign){
         return ((ISignText)sign).dye_brary$getTextColour();
-        //return 8816375;
+        //return i;
     }
 }
