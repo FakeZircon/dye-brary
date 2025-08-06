@@ -49,8 +49,8 @@ public abstract class SignTextMixin implements ISignText, SignAccessor {
         SignText newText = new SignText(messages, texts, DyeColor.BLACK, glowing);
         ((ISignText)newText).dye_brary$setTextColour(color);
 
-        Dyebrary.LOGGER.info(String.format("sign colour: %d", ((ISignText)newText).dye_brary$getTextColour()));
-        Dyebrary.LOGGER.info(String.format("given colour: %d", color));
+//        Dyebrary.LOGGER.info(String.format("sign colour: %d", ((ISignText)newText).dye_brary$getTextColour()));
+//        Dyebrary.LOGGER.info(String.format("given colour: %d", color));
         return newText;
     }
 
