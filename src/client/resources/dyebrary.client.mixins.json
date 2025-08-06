@@ -5,6 +5,7 @@
   "client": [
     "SheepRenderMixin",
     "ShulkerRenderMixin",
+    "SignEditScreenMixin",
     "SignRendererMixin"
   ],
   "injectors": {
