@@ -10,5 +10,6 @@ public class BeaconMixin implements IStainable {
     @Override
     public ModDyeColour getModColour() {
         return ModDyeColour.getByHex(16383998);
+        //return ModDyeColour.getByHex(0x8686f7);
     }
 }

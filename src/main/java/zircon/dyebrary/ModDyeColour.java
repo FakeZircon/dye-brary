@@ -70,10 +70,10 @@ public class ModDyeColour {
 
     //helper func cause I am tired of accessing the hashmap
     public static ModDyeColour getByHex(int colHex){
-        return DyeList.get(colHex);
+        return DyeList.get(colHex) != null ? DyeList.get(colHex) : DyeList.get(1908001);
     }
 
-    public static ModDyeColour getByComp(float[] colComps) {return DyeList.get(convertToHex(colComps));}
+    public static ModDyeColour getByComp(float[] colComps) {return getByHex(convertToHex(colComps));}
 
     public String getName() {
         return this.name;
