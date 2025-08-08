@@ -1,4 +1,4 @@
-package zircon.dyebrary.mixin;
+package zircon.dyebrary.mixin.entities;
 
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -11,7 +11,6 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;

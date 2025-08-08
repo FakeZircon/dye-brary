@@ -3,10 +3,14 @@
   "package": "zircon.dyebrary.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "block.BeaconMixin",
+    "DyeColorMixin",
     "DyeItemMixin",
-    "SheepColourMixin",
-    "ShulkerMixin",
+    "entities.SheepColourMixin",
+    "entities.ShulkerMixin",
     "SignTextMixin",
+    "block.StainedGlassMixin",
+    "block.StainedPaneMixin",
     "accessors.SignAccessor"
   ],
   "injectors": {

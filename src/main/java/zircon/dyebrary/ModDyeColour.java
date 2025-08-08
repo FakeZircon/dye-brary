@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static zircon.dyebrary.HelperFuncs.convertToHex;
+
 public class ModDyeColour {
     ////these values shouldn't even be here but I don't know where else to keep them in the meantime :)
 //    CANDY_APPLE("candy_apple", 0xf73838,MapColor.BRIGHT_RED, 0xf73838, 0xf73838),
@@ -70,6 +72,8 @@ public class ModDyeColour {
     public static ModDyeColour getByHex(int colHex){
         return DyeList.get(colHex);
     }
+
+    public static ModDyeColour getByComp(float[] colComps) {return DyeList.get(convertToHex(colComps));}
 
     public String getName() {
         return this.name;

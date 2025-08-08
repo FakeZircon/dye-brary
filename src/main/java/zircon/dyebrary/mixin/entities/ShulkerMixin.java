@@ -1,4 +1,4 @@
-package zircon.dyebrary.mixin;
+package zircon.dyebrary.mixin.entities;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
