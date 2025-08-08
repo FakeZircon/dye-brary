@@ -1,0 +1,20 @@
+package zircon.dyebrary;
+
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.PaneBlock;
+import zircon.dyebrary.interfaces.IStainable;
+
+public class ModStainedGlassPaneBlock extends PaneBlock implements IStainable {
+    private final ModDyeColour modColour;
+
+    public ModStainedGlassPaneBlock(ModDyeColour color, AbstractBlock.Settings settings) {
+        super(settings);
+        this.modColour = color;
+        this.setDefaultState(this.stateManager.getDefaultState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(WATERLOGGED, false));
+    }
+
+    @Override
+    public ModDyeColour getModColour() {
+        return this.modColour;
+    }
+}
