@@ -13,12 +13,12 @@ public class DyebraryClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		GetShulkerTextures();
 		//test adding new shulker texture for new dye colour
-		AddShulkerTexture(PIGEON_BLUE, new Identifier(Dyebrary.MOD_ID, "textures/entity/shulker/shulker_pigeon_blue.png"));
+		ModDyeColour.AddShulkerTexture(PIGEON_BLUE, new Identifier(Dyebrary.MOD_ID, "textures/entity/shulker/shulker_pigeon_blue.png"));
 	}
 
-	public static void AddShulkerTexture(ModDyeColour colour, Identifier textureID){
-		ShulkerTextures.put(colour, textureID);
-	}
+//	public static void AddShulkerTexture(ModDyeColour colour, Identifier textureID){
+//		ShulkerTextures.put(colour, textureID);
+//	}
 
 	public static void GetShulkerTextures(){
 		//this assumes vanilla dyes get their original ids but also, imagine a dye mod stealing the 0 index, I cannot even think of what all that would break

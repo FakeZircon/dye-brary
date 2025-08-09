@@ -1,4 +1,4 @@
-package zircon.dyebrary.mixin;
+package zircon.dyebrary.mixin.item;
 
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.entity.LivingEntity;

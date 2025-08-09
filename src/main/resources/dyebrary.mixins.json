@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "DyeColorMixin",
-    "DyeItemMixin",
     "SignTextMixin",
     "accessors.SignAccessor",
     "block.BeaconMixin",
@@ -12,7 +11,9 @@
     "block.StainedPaneMixin",
     "entities.BeaconBeamMixin",
     "entities.SheepColourMixin",
-    "entities.ShulkerMixin"
+    "entities.ShulkerMixin",
+    "item.DyeItemMixin",
+    "recipes.FireworkStarMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -81,6 +81,10 @@ public class ModDyeColour {
         return DyeItemList.get(modCol);
     }
 
+    public static ModDyeColour getByFirework(int fireworkColor){
+        return FireworkCols.get(fireworkColor);
+    }
+
     public String getName() {
         return this.name;
     }
@@ -115,4 +119,7 @@ public class ModDyeColour {
 
     //stores shulker textures in a hash with moddyecolour as the key
     public static Map<ModDyeColour, Identifier> ShulkerTextures = new HashMap<>();
+
+    //stores by firework colour
+    public static Map<Integer, ModDyeColour> FireworkCols = new HashMap<>();
 }
