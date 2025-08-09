@@ -16,12 +16,14 @@ import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTables;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -109,7 +111,7 @@ public abstract class SheepColourMixin extends AnimalEntity implements Shearable
 		ModDyeColour col1 = ((SheepMiddleMan)firstParent).dye_brary$getModColour();
 		ModDyeColour col2 = ((SheepMiddleMan)secondParent).dye_brary$getModColour();
 		RecipeInputInventory recipeInputInventory = createDyeMixer(col1, col2);
-		return (ModDyeColour) this.getWorld()
+		return this.getWorld()
 				.getRecipeManager()
 				.getFirstMatch(RecipeType.CRAFTING, recipeInputInventory, this.getWorld())
 				.map(recipe -> recipe.craft(recipeInputInventory, this.getWorld().getRegistryManager()))
@@ -136,5 +138,12 @@ public abstract class SheepColourMixin extends AnimalEntity implements Shearable
 		recipeInputInventory.setStack(0, new ItemStack(ModDyeColour.getItemByDye(firstDye)));
 		recipeInputInventory.setStack(1, new ItemStack(ModDyeColour.getItemByDye(secondDye)));
 		return recipeInputInventory;
+	}
+
+	//todo loot table stuff. UGH
+	@Inject(method = "getLootTableId", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
+	private void onGetLootTable(CallbackInfoReturnable<Identifier> cir){
+		cir.setReturnValue(LootTables.ANCIENT_CITY_CHEST);
+		cir.cancel();
 	}
 }
