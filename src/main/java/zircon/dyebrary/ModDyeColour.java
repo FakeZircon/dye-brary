@@ -53,6 +53,7 @@ public class ModDyeColour {
         this.fireworkColor = fireworkColor;
 
         DyeList.put(this.color, this);
+        FireworkCols.put(this.fireworkColor, this);
     }
 
     public ModDyeColour(String name, float[] colComps, MapColor mapColor, int fireworkColor, int signColor){
@@ -64,6 +65,7 @@ public class ModDyeColour {
         this.fireworkColor = fireworkColor;
 
         DyeList.put(this.color, this);
+        FireworkCols.put(this.fireworkColor, this);
     }
 
     public static void AddShulkerTexture(ModDyeColour colour, Identifier textureID){

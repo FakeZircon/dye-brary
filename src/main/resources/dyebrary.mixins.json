@@ -13,6 +13,7 @@
     "entities.SheepColourMixin",
     "entities.ShulkerMixin",
     "item.DyeItemMixin",
+    "item.FireworkStarTooltipMixin",
     "recipes.FireworkStarFadeMixin",
     "recipes.FireworkStarMixin"
   ],

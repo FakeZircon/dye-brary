@@ -13,6 +13,6 @@ public class DyeColorMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(String string, int i, int id, String name, int color, MapColor mapColor, int fireworkColor, int signColor, CallbackInfo ci){
         //init vanillish ModDyes here so they are registered in time for block and item creation
-        new ModDyeColour(string, color, mapColor, fireworkColor, signColor);
+        new ModDyeColour(name, color, mapColor, fireworkColor, signColor);
     }
 }
