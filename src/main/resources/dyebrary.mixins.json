@@ -13,6 +13,7 @@
     "entities.SheepColourMixin",
     "entities.ShulkerMixin",
     "item.DyeItemMixin",
+    "recipes.FireworkStarFadeMixin",
     "recipes.FireworkStarMixin"
   ],
   "injectors": {
