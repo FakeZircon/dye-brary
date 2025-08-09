@@ -46,6 +46,7 @@ public abstract class DyeItemMixin extends Item implements SignChangingItem, IDy
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(DyeColor color, Settings settings, CallbackInfo ci){
         this.modColor = ModDyeColour.getByComp(color.getColorComponents());
+        ModDyeColour.DyeItemList.put(this.modColor, this);
     }
 
     @Shadow public abstract boolean useOnSign(World world, SignBlockEntity signBlockEntity, boolean front, PlayerEntity player);

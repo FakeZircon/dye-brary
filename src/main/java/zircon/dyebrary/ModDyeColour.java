@@ -2,9 +2,11 @@ package zircon.dyebrary;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.MapColor;
+import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
+import zircon.dyebrary.interfaces.IDyeItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,10 +72,14 @@ public class ModDyeColour {
 
     //helper func cause I am tired of accessing the hashmap
     public static ModDyeColour getByHex(int colHex){
-        return DyeList.get(colHex) != null ? DyeList.get(colHex) : DyeList.get(1908001);
+        return DyeList.get(colHex) != null ? DyeList.get(colHex) : DyeList.get(1908001);    //return black if no match
     }
 
     public static ModDyeColour getByComp(float[] colComps) {return getByHex(convertToHex(colComps));}
+
+    public static Item getItemByDye(ModDyeColour modCol){
+        return DyeItemList.get(modCol);
+    }
 
     public String getName() {
         return this.name;
@@ -103,6 +109,9 @@ public class ModDyeColour {
 
     //stores dyes in a hash with hexcode as the key
     public static Map<Integer, ModDyeColour> DyeList = new HashMap<>();
+
+    //stores dye items in a hash with dyecolour as the key
+    public static Map<ModDyeColour, Item> DyeItemList = new HashMap<>();
 
     //stores shulker textures in a hash with moddyecolour as the key
     public static Map<ModDyeColour, Identifier> ShulkerTextures = new HashMap<>();

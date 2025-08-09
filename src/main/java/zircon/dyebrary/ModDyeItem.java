@@ -26,6 +26,7 @@ public class ModDyeItem extends Item implements SignChangingItem, IDyeItem {
     public ModDyeItem(ModDyeColour colour, Settings settings) {
         super(settings);
         this.modColor = colour;
+        ModDyeColour.DyeItemList.put(this.modColor, this);
     }
 
     @Override
