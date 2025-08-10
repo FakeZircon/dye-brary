@@ -34,10 +34,11 @@ public abstract class LoomHandlerMixin extends ScreenHandler {
         super(type, syncId);
     }
 
-    //hand inserting
+    //slot definition
     @ModifyArgs(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/screen/ScreenHandlerContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/LoomScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 1))
     private void allowAllDyes(Args args){
-        args.set(0, new Slot(this.input, 1, 33, 26) {
+        Slot oldDef = args.get(0);
+        args.set(0, new Slot(this.input, oldDef.getIndex(), oldDef.x, oldDef.y) {
             @Override
             public boolean canInsert(ItemStack stack) {
                 return stack.getItem() instanceof IDyeItem;
