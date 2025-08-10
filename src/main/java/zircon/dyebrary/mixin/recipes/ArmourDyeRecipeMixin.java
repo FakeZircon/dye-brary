@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -49,10 +50,18 @@ public class ArmourDyeRecipeMixin {
     @Definition(id = "item", local = @Local(type = Item.class))
     @Expression("item instanceof DyeItem")
     @ModifyExpressionValue(method = "craft(Lnet/minecraft/inventory/RecipeInputInventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;", at = @At(value = "MIXINEXTRAS:EXPRESSION"))
+    private boolean dontExitOnDyes(boolean original, @Local Item item){
+        return original || item instanceof IDyeItem;
+    }
 
     @Inject(method = "craft(Lnet/minecraft/inventory/RecipeInputInventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void addVanillishDyes(RecipeInputInventory recipeInputInventory, DynamicRegistryManager dynamicRegistryManager, CallbackInfoReturnable<ItemStack> cir, @Local Item item){
         dyeList.add(((IDyeItem) item));     //add vanillish dyes
+    }
+
+    @WrapWithCondition(method = "craft(Lnet/minecraft/inventory/RecipeInputInventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+    private boolean noMoreCastCrash(List instance, Object e){
+        return e instanceof DyeItem;
     }
 
     @WrapOperation(method = "craft(Lnet/minecraft/inventory/RecipeInputInventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/DyeableItem;blendAndSetColor(Lnet/minecraft/item/ItemStack;Ljava/util/List;)Lnet/minecraft/item/ItemStack;"))

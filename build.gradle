@@ -39,9 +39,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// mixinextras
-	implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.0"))
-	include("io.github.llamalad7:mixinextras-fabric:0.5.0")
 }
 
 processResources {
