@@ -12,8 +12,11 @@
     "entities.BeaconBeamMixin",
     "entities.SheepColourMixin",
     "entities.ShulkerMixin",
+    "item.DyeableArmourItemMixin",
+    "item.DyeableHorseArmourMixin",
     "item.DyeItemMixin",
     "item.FireworkStarTooltipMixin",
+    "recipes.ArmourDyeRecipeMixin",
     "recipes.FireworkStarFadeMixin",
     "recipes.FireworkStarMixin"
   ],
@@ -22,5 +25,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
-	}
+  },
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
 }
