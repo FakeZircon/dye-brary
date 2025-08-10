@@ -29,12 +29,11 @@ import java.util.List;
 
 @Mixin(ArmorDyeRecipe.class)
 public class ArmourDyeRecipeMixin {
-    @Unique
-    List<IDyeItem> dyeList = Lists.newArrayList();
 
     //I am at my wits end with doing this cleanly. Maybe one day I will do this less destructively
     @Inject(method = "craft(Lnet/minecraft/inventory/RecipeInputInventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;", at = @At("HEAD"), cancellable = true)
     private void onCraft(RecipeInputInventory recipeInputInventory, DynamicRegistryManager dynamicRegistryManager, CallbackInfoReturnable<ItemStack> cir){
+        List<IDyeItem> dyeList = Lists.newArrayList();
         ItemStack itemStack = ItemStack.EMPTY;
 
         for (int i = 0; i < recipeInputInventory.size(); i++) {
