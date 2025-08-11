@@ -14,6 +14,6 @@ import zircon.dyebrary.interfaces.ITropicalFishCols;
 public class TropicalFishPatternRenderMixin {
     @ModifyVariable(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/passive/TropicalFishEntity;FFFFFF)V", at = @At("STORE"), ordinal = 0)
     private float[] getModPatternCol(float[] fs, @Local(argsOnly = true) TropicalFishEntity tropicalFishEntity){
-        return ((ITropicalFishCols)tropicalFishEntity).getPatternColComps();
+        return ((ITropicalFishCols)tropicalFishEntity).getPatternCol().getColorComponents();
     }
 }

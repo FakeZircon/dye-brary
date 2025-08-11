@@ -17,6 +17,7 @@
     "item.DyeableArmourItemMixin",
     "item.DyeableHorseArmourMixin",
     "item.DyeItemMixin",
+    "item.EntityBucketItemMixin",
     "item.FireworkStarTooltipMixin",
     "recipes.ArmourDyeRecipeMixin",
     "recipes.FireworkStarFadeMixin",

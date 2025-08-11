@@ -1,20 +1,27 @@
 package zircon.dyebrary.mixin.entities;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.entity.passive.TropicalFishEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.ITropicalFishCols;
 
@@ -52,15 +59,38 @@ public abstract class TropicalFishMixin extends SchoolingFishEntity implements I
         }
     }
 
-    @Override
-    public float[] getBaseColComps(){
-        ModDyeColour col = ModDyeColour.getByHex(this.dataTracker.get(BASE_COL));
-        return col != null ? col.getColorComponents() : ModDyeColour.getByHex(16383998).getColorComponents();
+    // add nbt colour data to bucket item
+    @Inject(method = "copyDataToStack", at = @At("RETURN"))
+    public void onCopyDataToStack(ItemStack stack, CallbackInfo ci, @Local NbtCompound nbtCompound){
+        nbtCompound.putInt("Base", this.dataTracker.get(BASE_COL));
+        nbtCompound.putInt("Pattern", this.dataTracker.get(PATT_COL));
+    }
+
+    //grab colour data from bucketed fish
+    @Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;getInt(Ljava/lang/String;)I"))
+    private void getColData(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir){
+        this.setBaseCol(entityNbt.getInt("Base"));
+        this.setPatternCol(entityNbt.getInt("Pattern"));
     }
 
     @Override
-    public float[] getPatternColComps(){
+    public ModDyeColour getBaseCol(){
+        ModDyeColour col = ModDyeColour.getByHex(this.dataTracker.get(BASE_COL));
+        return col != null ? col : ModDyeColour.getByHex(16383998);
+    }
+
+    @Override
+    public ModDyeColour getPatternCol(){
         ModDyeColour col = ModDyeColour.getByHex(this.dataTracker.get(PATT_COL));
-        return col != null ? col.getColorComponents() : ModDyeColour.getByHex(16383998).getColorComponents();
+        return col != null ? col : ModDyeColour.getByHex(16383998);
+    }
+
+    @Override
+    public void setBaseCol(int col){
+        this.dataTracker.set(BASE_COL, col);
+    }
+    @Override
+    public void setPatternCol(int col){
+        this.dataTracker.set(PATT_COL, col);
     }
 }

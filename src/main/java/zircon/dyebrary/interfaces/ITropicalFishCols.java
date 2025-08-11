@@ -1,6 +1,11 @@
 package zircon.dyebrary.interfaces;
 
+import zircon.dyebrary.ModDyeColour;
+
 public interface ITropicalFishCols {
-    float[] getBaseColComps();
-    float[] getPatternColComps();
+    ModDyeColour getBaseCol();
+    ModDyeColour getPatternCol();
+
+    void setBaseCol(int col);
+    void setPatternCol(int col);
 }
