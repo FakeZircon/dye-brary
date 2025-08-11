@@ -13,6 +13,7 @@
     "entities.BeaconBeamMixin",
     "entities.SheepColourMixin",
     "entities.ShulkerMixin",
+    "entities.TropicalFishMixin",
     "item.DyeableArmourItemMixin",
     "item.DyeableHorseArmourMixin",
     "item.DyeItemMixin",

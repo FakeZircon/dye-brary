@@ -6,7 +6,9 @@
     "SheepRenderMixin",
     "ShulkerRenderMixin",
     "SignEditScreenMixin",
-    "SignRendererMixin"
+    "SignRendererMixin",
+    "TropicalFishBaseRenderMixin",
+    "TropicalFishPatternRenderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
