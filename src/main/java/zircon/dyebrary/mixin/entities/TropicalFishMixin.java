@@ -13,6 +13,8 @@ import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -72,6 +74,17 @@ public abstract class TropicalFishMixin extends SchoolingFishEntity implements I
         this.setBaseCol(entityNbt.getInt("Base"));
         this.setPatternCol(entityNbt.getInt("Pattern"));
     }
+
+    //New fish spawning
+    @Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DyeColor;values()[Lnet/minecraft/util/DyeColor;"))
+    private void randomFishCols(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir, @Local Random random){
+        ModDyeColour col1 = (ModDyeColour) Util.getRandom(ModDyeColour.DyeList.values().toArray(), random);
+        ModDyeColour col2 = (ModDyeColour) Util.getRandom(ModDyeColour.DyeList.values().toArray(), random);
+
+        this.setBaseCol(col1.getColor());
+        this.setPatternCol(col2.getColor());
+    }
+
 
     @Override
     public ModDyeColour getBaseCol(){
