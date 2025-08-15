@@ -28,13 +28,13 @@ public class Dyebrary implements ModInitializer {
 	public static final Item PIGEON_BLUE_DYE = registerModDyeItem(new Identifier(MOD_ID, "pigeon_blue_dye"), PIGEON_BLUE);
 
 	public static final Block PIGEON_GLASS = new ModStainedGlassBlock(PIGEON_BLUE, FabricBlockSettings.copyOf(Blocks.WHITE_STAINED_GLASS));
+	public static final Block PIGEON_GLASS_PANE = new ModStainedGlassPaneBlock(PIGEON_BLUE, FabricBlockSettings.copyOf(Blocks.WHITE_STAINED_GLASS));
 
 	@Override
 	public void onInitialize() {
 		LOGGER.info("What A Wonderful Colourful World!");
-		BlockItem blockItem = new BlockItem(PIGEON_GLASS, new Item.Settings());
-		Registry.register(Registries.ITEM, "dyebrary:pigeon_glass", blockItem);
-		Registry.register(Registries.BLOCK, "dyebrary:pigeon_glass", PIGEON_GLASS);
+		registerBlock(new Identifier(MOD_ID, "pigeon_glass"), PIGEON_GLASS);
+		registerBlock(new Identifier(MOD_ID, "pigeon_glass_pane"), PIGEON_GLASS_PANE);
 	}
 
 	//helper function for testing only, this should be done by the modder themself for max customization
@@ -42,5 +42,11 @@ public class Dyebrary implements ModInitializer {
 		ModDyeItem dye = new ModDyeItem(colour, new FabricItemSettings());
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register( (itemGroup) -> itemGroup.addBefore(Items.BOWL, dye));
 		return Registry.register(Registries.ITEM, id, dye);
+	}
+
+	private static void registerBlock(Identifier id, Block block){
+		BlockItem blockItem = new BlockItem(block, new Item.Settings());
+		Registry.register(Registries.ITEM, id, blockItem);
+		Registry.register(Registries.BLOCK, id, block);
 	}
 }
