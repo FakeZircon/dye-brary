@@ -9,6 +9,7 @@ import static zircon.dyebrary.Dyebrary.PIGEON_BLUE;
 import static zircon.dyebrary.ModDyeColour.ShulkerTextures;
 
 public class DyebraryClient implements ClientModInitializer {
+	//todo figure out why exporting in nondev mode bricks render code
 	@Override
 	public void onInitializeClient() {
 		GetShulkerTextures();
