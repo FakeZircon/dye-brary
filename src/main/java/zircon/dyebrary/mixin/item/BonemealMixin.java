@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Items.class)
 public abstract class BonemealMixin {
-    //todo make bonemeal food easteregg for users with the word "bones" in their name
     @ModifyArg(
             method = "<clinit>",
             slice = @Slice(
