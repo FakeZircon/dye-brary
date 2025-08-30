@@ -1,7 +1,11 @@
 package zircon.dyebrary.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,9 +19,8 @@ public class SignRendererMixin {
         return ((ISignText)sign).dye_brary$getTextColour();
     }
 
-    //hate to use "name" here, but I straight up don't think I can do without it
-    @ModifyVariable(method = "renderText", at = @At("STORE"), name = "k")
-    private static int modGlowCol(int k, BlockPos pos, SignText sign){
+    @WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DyeColor;getSignColor()I"))
+    private static int modRenderText(DyeColor instance, Operation<Integer> original, @Local(argsOnly = true) SignText sign){
         return ((ISignText)sign).dye_brary$getTextColour();
     }
 }
