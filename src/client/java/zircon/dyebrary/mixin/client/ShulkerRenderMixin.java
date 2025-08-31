@@ -23,6 +23,7 @@ public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, Shulker
         super(context, entityModel, f);
     }
 
+    //this is not specific enough, either cause it's an interface or cause it's polymorphic, will test hypothesis later but this is why the jar doesn't run
     @Override
     public Identifier getTexture(ShulkerEntity shulkerEntity) {
         if (((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour() == null){
