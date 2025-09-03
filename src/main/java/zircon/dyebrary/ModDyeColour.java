@@ -79,6 +79,8 @@ public class ModDyeColour {
 
     public static ModDyeColour getByComp(float[] colComps) {return getByHex(convertToHex(colComps));}
 
+    public static ModDyeColour getByVanilla(DyeColor vanilla) {return getByComp(vanilla.getColorComponents());}
+
     public static Item getItemByDye(ModDyeColour modCol){
         return DyeItemList.get(modCol);
     }

@@ -1,23 +1,30 @@
 package zircon.dyebrary.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.LoomScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.DyeColor;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.IDyeItem;
 
 @Mixin(LoomScreenHandler.class)
@@ -29,6 +36,9 @@ public abstract class LoomHandlerMixin extends ScreenHandler {
     @Final
     @Shadow
     Slot dyeSlot;
+
+    @Unique
+    private ModDyeColour modCol;
 
     protected LoomHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId) {
         super(type, syncId);
@@ -55,5 +65,17 @@ public abstract class LoomHandlerMixin extends ScreenHandler {
                 cir.cancel();
             }
         }
+    }
+
+    @WrapOperation(method = "updateOutputSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
+    public Item passModDye(ItemStack instance, Operation<Item> original){
+        //save ModDyeColour, pass dummy dye item so the game doesn't get pissy
+        modCol = ((IDyeItem)instance.getItem()).dye_brary$getModColour();
+        return DyeItem.byColor(DyeColor.WHITE);
+    }
+
+    @ModifyArg(method = "updateOutputSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;putInt(Ljava/lang/String;I)V"))
+    public int fixNBT(int value){
+        return modCol.getColor();
     }
 }

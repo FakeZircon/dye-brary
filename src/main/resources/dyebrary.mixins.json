@@ -3,6 +3,7 @@
   "package": "zircon.dyebrary.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BannerPatternMixin",
     "DyeColorMixin",
     "LoomHandlerMixin",
     "SignTextMixin",
@@ -10,6 +11,7 @@
     "block.BeaconMixin",
     "block.StainedGlassMixin",
     "block.StainedPaneMixin",
+    "entities.BannerEntityMixin",
     "entities.BeaconBeamMixin",
     "entities.SheepColourMixin",
     "entities.ShulkerMixin",

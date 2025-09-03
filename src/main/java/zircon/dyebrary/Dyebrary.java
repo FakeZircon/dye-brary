@@ -35,7 +35,7 @@ public class Dyebrary implements ModInitializer {
 		registerBlock(new Identifier(MOD_ID, "pigeon_glass_pane"), PIGEON_GLASS_PANE);
 	}
 
-	//helper function for testing only, this should be done by the modder themself for max customization
+	//helper functions for testing only, these should be done by the modder themself for max customization
 	private static Item registerModDyeItem(Identifier id, ModDyeColour colour){
 		ModDyeItem dye = new ModDyeItem(colour, new FabricItemSettings());
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register( (itemGroup) -> itemGroup.addBefore(Items.BOWL, dye));
