@@ -9,11 +9,14 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import zircon.dyebrary.ModDyeColour;
 import zircon.dyebrary.interfaces.ShulkerMiddleMan;
 
 @Mixin(ShulkerEntityRenderer.class)
-public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, ShulkerEntityModel<ShulkerEntity>> {
+public abstract class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, ShulkerEntityModel<ShulkerEntity>> {
 
     @Shadow
     @Final
@@ -22,18 +25,19 @@ public class ShulkerRenderMixin extends MobEntityRenderer<ShulkerEntity, Shulker
     public ShulkerRenderMixin(EntityRendererFactory.Context context, ShulkerEntityModel<ShulkerEntity> entityModel, float f) {
         super(context, entityModel, f);
     }
-
-    //this is not specific enough, either cause it's an interface or cause it's polymorphic, will test hypothesis later but this is why the jar doesn't run
-    @Override
-    public Identifier getTexture(ShulkerEntity shulkerEntity) {
+    
+    @Inject(method = "getTexture(Lnet/minecraft/entity/mob/ShulkerEntity;)Lnet/minecraft/util/Identifier;", at = @At("HEAD"), cancellable = true)
+    public void onGetTexture(ShulkerEntity shulkerEntity, CallbackInfoReturnable<Identifier> cir){
         if (((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour() == null){
-            return TEXTURE;
+            cir.setReturnValue(TEXTURE);
         }
         if (ModDyeColour.ShulkerTextures.containsKey(((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour())){
-            return ModDyeColour.ShulkerTextures.get(((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour());
+            cir.setReturnValue(ModDyeColour.ShulkerTextures.get(((ShulkerMiddleMan)shulkerEntity).dye_brary$getModColour()));
         }
         else {
-            return TEXTURE;
+            cir.setReturnValue(TEXTURE);
         }
+
+        cir.cancel();
     }
 }
