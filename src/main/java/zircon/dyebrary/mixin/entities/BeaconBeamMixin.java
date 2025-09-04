@@ -28,7 +28,8 @@ public class BeaconBeamMixin {
 
     @ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/DyeColor;getColorComponents()[F"))
     private static float[] modColComp(float[] fs, World world, BlockPos pos, BlockState state, BeaconBlockEntity blockEntity){
-        //weird crash I can't reproduce but might as well guard against
+        //weird crash I can't reproduce but might as well guard against.
+        //This didn't fix the crash, still not sure how to cause it
         if(world.getBlockState(currBlockPos).getBlock() instanceof AirBlock) {return new float[]{0, 0, 0};}
 
         return ((IStainable)world.getBlockState(currBlockPos).getBlock()).getModColour().getColorComponents();

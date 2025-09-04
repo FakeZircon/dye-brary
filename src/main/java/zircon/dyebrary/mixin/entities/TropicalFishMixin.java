@@ -90,8 +90,8 @@ public abstract class TropicalFishMixin extends SchoolingFishEntity implements I
     //known variant fish colouring
     @Inject(method = "initialize", at = @At("TAIL"))
     private void knownVariantFishCols(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, NbtCompound entityNbt, CallbackInfoReturnable<EntityData> cir, @Local TropicalFishEntity.Variant variant){
-        this.setBaseCol(ModDyeColour.getByComp(variant.baseColor().getColorComponents()).getColor());
-        this.setPatternCol(ModDyeColour.getByComp(variant.patternColor().getColorComponents()).getColor());
+        this.setBaseCol(ModDyeColour.getByVanilla(variant.baseColor()).getColor());
+        this.setPatternCol(ModDyeColour.getByVanilla(variant.patternColor()).getColor());
     }
 
     @Override
