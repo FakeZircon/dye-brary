@@ -13,6 +13,7 @@ import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -59,6 +60,7 @@ public abstract class TropicalFishMixin extends SchoolingFishEntity implements I
         if (nbt.contains("Pattern", NbtElement.NUMBER_TYPE)) {
             this.dataTracker.set(PATT_COL, nbt.getInt("Pattern"));
         }
+
     }
 
     // add nbt colour data to bucket item
