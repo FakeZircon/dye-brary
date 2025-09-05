@@ -53,7 +53,7 @@ public abstract class BannerEntityMixin implements IBannerBlock {
                 if (registryEntry != null) {
                     int j = nbtCompound.getInt("Color");
                     ModDyeColour patCol;
-                    if (j <= 15) {  //correct for vanilla generated banners
+                    if (j <= 15) {  //correct for vanilla generated banners. Doesn't work currently
                         patCol = ModDyeColour.getByVanilla(DyeColor.byId(j));
                     }
                     else {
